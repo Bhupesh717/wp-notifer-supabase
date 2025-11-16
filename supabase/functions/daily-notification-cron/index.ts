@@ -49,16 +49,18 @@ Deno.serve(async (req: Request) => {
       );
     }
 
-    const now = new Date();
-    const currentTime = now.toTimeString().slice(0, 5);
+    const istTime = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
+    const istDate = new Date(istTime);
+    const currentTimeIST = istDate.toTimeString().slice(0, 5);
     const scheduledTime = settings.schedule_time.slice(0, 5);
 
-    if (currentTime !== scheduledTime) {
+    if (currentTimeIST !== scheduledTime) {
       return new Response(
         JSON.stringify({ 
           message: 'Not scheduled time yet',
-          current_time: currentTime,
-          scheduled_time: scheduledTime
+          current_time_ist: currentTimeIST,
+          scheduled_time: scheduledTime,
+          timezone: 'Asia/Kolkata (IST, UTC+5:30)'
         }),
         {
           status: 200,
@@ -180,10 +182,11 @@ Deno.serve(async (req: Request) => {
     return new Response(
       JSON.stringify({
         success: true,
-        message: 'Daily notification sent successfully',
+        message: 'Daily notification sent successfully at IST',
         notification_id: oneSignalResult.id,
         recipients: oneSignalResult.recipients,
         post: { id: postId, title: postTitle, url: postUrl },
+        timezone: 'Asia/Kolkata (IST, UTC+5:30)',
       }),
       {
         status: 200,
