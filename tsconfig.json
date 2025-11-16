@@ -1,0 +1,14 @@
+{
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
+  ],
+
+
+  "compilerOptions": {
+    "lib": ["deno.ns", "deno.unstable"],
+    "types": ["https://deno.land/std@0.203.0/types.d.ts"]
+  
+}
+}
