@@ -37,10 +37,10 @@ Deno.serve(async (req: Request) => {
 
     if (!settings.service_active || !settings.daily_enabled) {
       return new Response(
-        JSON.stringify({ 
+        JSON.stringify({
           message: 'Service inactive or daily notifications disabled',
           service_active: settings.service_active,
-          daily_enabled: settings.daily_enabled
+          daily_enabled: settings.daily_enabled,
         }),
         {
           status: 200,
@@ -49,18 +49,20 @@ Deno.serve(async (req: Request) => {
       );
     }
 
-    const istTime = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
+    const istTime = new Date().toLocaleString('en-IN', {
+      timeZone: 'Asia/Kolkata',
+    });
     const istDate = new Date(istTime);
     const currentTimeIST = istDate.toTimeString().slice(0, 5);
     const scheduledTime = settings.schedule_time.slice(0, 5);
 
     if (currentTimeIST !== scheduledTime) {
       return new Response(
-        JSON.stringify({ 
+        JSON.stringify({
           message: 'Not scheduled time yet',
           current_time_ist: currentTimeIST,
           scheduled_time: scheduledTime,
-          timezone: 'Asia/Kolkata (IST, UTC+5:30)'
+          timezone: 'Asia/Kolkata (IST, UTC+5:30)',
         }),
         {
           status: 200,
@@ -116,9 +118,9 @@ Deno.serve(async (req: Request) => {
 
     if (existingNotification) {
       return new Response(
-        JSON.stringify({ 
+        JSON.stringify({
           message: 'Notification already sent for this post',
-          post_id: postId
+          post_id: postId,
         }),
         {
           status: 200,
@@ -187,6 +189,7 @@ Deno.serve(async (req: Request) => {
         recipients: oneSignalResult.recipients,
         post: { id: postId, title: postTitle, url: postUrl },
         timezone: 'Asia/Kolkata (IST, UTC+5:30)',
+        timestamp_ist: istTime,
       }),
       {
         status: 200,

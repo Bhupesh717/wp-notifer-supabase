@@ -43,11 +43,12 @@ Deno.serve(async (req: Request) => {
       .limit(1)
       .maybeSingle();
 
-    const now = new Date();
+    const istTime = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
+    const now = new Date(istTime);
     const scheduleTimeParts = settings.schedule_time.split(':');
-    const nextScheduled = new Date();
+    const nextScheduled = new Date(istTime);
     nextScheduled.setHours(parseInt(scheduleTimeParts[0]), parseInt(scheduleTimeParts[1]), 0, 0);
-    
+
     if (nextScheduled <= now) {
       nextScheduled.setDate(nextScheduled.getDate() + 1);
     }
@@ -59,6 +60,7 @@ Deno.serve(async (req: Request) => {
       next_scheduled: settings.daily_enabled ? nextScheduled.toISOString() : null,
       last_notification_sent: lastNotification?.sent_at || null,
       configured: !!settings.wordpress_url && !!settings.onesignal_app_id && !!settings.onesignal_api_key,
+      timezone: 'Asia/Kolkata (IST, UTC+5:30)',
     };
 
     return new Response(JSON.stringify(status), {
